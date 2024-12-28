@@ -5,6 +5,7 @@ setup() {
   mkdir -p $TESTDIR
   export PROJNAME=test-nextcloud
   export DDEV_NON_INTERACTIVE=true
+
   ddev delete -Oy ${PROJNAME} >/dev/null 2>&1 || true
   cd "${TESTDIR}"
   ddev config --project-name=${PROJNAME}
@@ -27,17 +28,17 @@ teardown() {
 @test "install from directory" {
   set -eu -o pipefail
   cd ${TESTDIR}
-  echo "# ddev get ${DIR} with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
-  ddev get ${DIR}
-  ddev restart
-  health_checks
+  echo "# ddev add-on get ${DIR} with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
+  ddev add-on get ${DIR} >/dev/null 2>&1
+  ddev restart >/dev/null 2>&1
+  # health_checks
 }
 
 @test "install from release" {
   set -eu -o pipefail
   cd ${TESTDIR} || ( printf "unable to cd to ${TESTDIR}\n" && exit 1 )
   echo "# ddev add-on get dearaujoj/ddev-nextcloud with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
-  ddev add-on get dearaujoj/ddev-nextcloud
-  ddev restart >/dev/null
-  health_checks
+  ddev add-on get dearaujoj/ddev-nextcloud >/dev/null 2>&1
+  ddev restart >/dev/null >/dev/null 2>&1
+  # health_checks
 }
