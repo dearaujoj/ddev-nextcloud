@@ -36,8 +36,8 @@ teardown() {
 @test "install from release" {
   set -eu -o pipefail
   cd ${TESTDIR} || ( printf "unable to cd to ${TESTDIR}\n" && exit 1 )
-  echo "# ddev get ddev/ddev-nextcloud with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
-  ddev get ddev/ddev-nextcloud
+  echo "# ddev add-on get dearaujoj/ddev-nextcloud with project ${PROJNAME} in ${TESTDIR} ($(pwd))" >&3
+  ddev add-on get dearaujoj/ddev-nextcloud
   ddev restart >/dev/null
   health_checks
 }
