@@ -1,0 +1,8 @@
+#ddev-generated
+hooks:
+  post-start:
+  # Create a new database called "nextcloud"
+  - exec: |
+      mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS nextcloud; GRANT ALL ON nextcloud.* to 'db'@'%';"
+    service: db
+  

@@ -9,7 +9,7 @@ services:
     networks: [default, ddev_default]
     environment:
       - MYSQL_HOST=${DDEV_SITENAME}-db
-      - MYSQL_DATABASE=db
+      - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=db
       - MYSQL_PASSWORD=db
       - NEXTCLOUD_ADMIN_USER=admin
