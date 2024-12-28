@@ -37,36 +37,54 @@ The platform prioritizes privacy and data sovereignty through self-hosting rathe
 
 ## Components of the repository
 
-* The fundamental contents of the add-on service or other component. For example, in this template there is a [docker-compose.nextcloud.yaml](docker-compose.nextcloud.yaml) file.
-* An [install.yaml](install.yaml) file that describes how to install the service or other component.
-* A test suite in [test.bats](tests/test.bats) that makes sure the service continues to work as expected.
-* [Github actions setup](.github/workflows/tests.yml) so that the tests run automatically when you push to the repository.
+* A `docker-compose.nextcloud.yaml` that sets up Nextcloud with:
+  * Automatic database integration
+  * Persistent storage for data, config, and apps
+  * Secure networking configuration
+  * Health monitoring
+* A `config.nextcloud-db.yaml` for database configuration
+* An `install.yaml` that manages the addon installation with:
+  * Pre-installation checks
+  * Database creation and configuration
+  * Post-installation instructions
+  * Clean removal process including database cleanup
+* Test suite in `tests/test.bats` to ensure reliability
+* GitHub Actions setup in `.github/workflows/tests.yml` for automated testing
 
 ## Getting started
 
-1. Choose a good descriptive name for your add-on. It should probably start with "ddev-" and include the basic service or functionality. If it's particular to a specific CMS, perhaps `ddev-<CMS>-servicename`.
-2. Create the new template repository by using the template button.
-3. Globally replace "nextcloud" with the name of your add-on.
-4. Add the files that need to be added to a DDEV project to the repository. For example, you might replace `docker-compose.nextcloud.yaml` with the `docker-compose.*.yaml` for your recipe.
-5. Update the `install.yaml` to give the necessary instructions for installing the add-on:
+### For Users
 
-   * The fundamental line is the `project_files` directive, a list of files to be copied from this repo into the project `.ddev` directory.
-   * You can optionally add files to the `global_files` directive as well, which will cause files to be placed in the global `.ddev` directory, `~/.ddev`.
-   * Finally, `pre_install_commands` and `post_install_commands` are supported. These can use the host-side environment variables documented [in DDEV docs](https://ddev.readthedocs.io/en/latest/users/extend/custom-commands/#environment-variables-provided).
+1. Installation:
 
-6. Update `tests/test.bats` to provide a reasonable test for your repository. Tests are triggered either by manually executing `bats ./tests/test.bats`, automatically on every push to the repository, or periodically each night. Please make sure to attend to test failures when they happen. Others will be depending on you. Bats is a simple testing framework that just uses Bash. To run a Bats test locally, you have to [install bats-core](https://bats-core.readthedocs.io/en/stable/installation.html) first. Then you download your add-on, and finally run `bats ./tests/test.bats` within the root of the uncompressed directory. To learn more about Bats see the [documentation](https://bats-core.readthedocs.io/en/stable/).
-7. When everything is working, including the tests, you can push the repository to GitHub.
-8. Create a [release](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository) on GitHub.
-9. Test manually with `ddev get <owner/repo>`.
-10. You can test PRs with `ddev get https://github.com/<user>/<repo>/tarball/<branch>`
-11. Update the `README.md` to describe the add-on, how to use it, and how to contribute. If there are any manual actions that have to be taken, please explain them. If it requires special configuration of the using project, please explain how to do those. Examples in [ddev/ddev-solr](https://github.com/ddev/ddev-solr), [ddev/ddev-memcached](https://github.com/ddev/ddev-memcached), and (advanced) [ddev-platformsh](https://github.com/ddev/ddev-platformsh).
-12. Update the `README.md` header in Title Case format, for example, use `# DDEV Redis`, not `# ddev-redis`.
-13. Add a good short description to your repo, and add the [topic](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/classifying-your-repository-with-topics) "ddev-get". It will immediately be added to the list provided by `ddev get --list --all`.
-14. When it has matured you will hopefully want to have it become an "official" maintained add-on. Open an issue in the [DDEV queue](https://github.com/ddev/ddev/issues) for that.
+    For DDEV v1.23.5 or above run
 
-Add-ons were covered in [DDEV Add-ons: Creating, maintaining, testing](https://www.dropbox.com/scl/fi/bnvlv7zswxwm8ix1s5u4t/2023-11-07_DDEV_Add-ons.mp4?rlkey=5cma8s11pscxq0skawsoqrscp&dl=0) (part of the [DDEV Contributor Live Training](https://ddev.com/blog/contributor-training)).
+    ```bash
+    ddev add-on get dearaujoj/ddev-nextcloud && ddev restart
+    ```
 
-Note that more advanced techniques are discussed in [DDEV docs](https://ddev.readthedocs.io/en/latest/users/extend/additional-services/#additional-service-configurations-and-add-ons-for-ddev).
+    For earlier versions of DDEV run
+
+    ```bash
+    ddev get dearaujoj/ddev-nextcloud && ddev restart
+    ```
+
+2. Access Nextcloud at: `https://<projectname>.ddev.site`
+
+3. Log in with the default credentials:
+   * Username: `admin`
+   * Password: `admin`
+
+### For Contributors
+
+1. Fork the repository
+2. Create your feature branch
+3. Test your changes:
+   ```bash
+   ddev start
+   bats tests
+   ```
+4. Submit a pull request
 
 ## How to debug tests (Github Actions)
 
